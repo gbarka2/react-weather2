@@ -1,23 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
+import React, {useState} from 'react'
+import Weather from './components/Weather'
+import Form from './components/Form'
 
 function App() {
+
+  // const apiKey = "6b52cfa597d7784744ea93bce3b52bb5"
+  const [weather, setWeather] = useState(null)
+
+  const getWeather = async (zipcode) => {
+    const response = await fetch(`http://api.openweathermap.org/data/2.5/weather?zip=${zipcode},us&units=imperial&appid=6b52cfa597d7784744ea93bce3b52bb5`)
+    console.log('response:', response)
+    const data = await response.json()
+    console.log('data:', data)
+    setWeather(data)
+  };
+  // `api.openweathermap.org/data/2.5/weather?zip=${zipcode},us&appid=${apiKey}`
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form weathersearch={getWeather}/>
+      <Weather weather={weather} />
     </div>
   );
 }
